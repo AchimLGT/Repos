@@ -1,40 +1,16 @@
-_G.infdmg = true
-_G.auto = true
-
-getgenv().placeholder = function(epic)
-    local hds = _G.infdmg and math.huge or epic.dmg.headshot
-    local bds = _G.infdmg and math.huge or epic.dmg.bodyshot
-    local rpm = _G.auto and 1500 or epic.rpm
-    local fm = _G.auto and "auto" or epic.fm
-   local hmm = {
-       teamkill = true,
-       autoReload = true,
-       spread_m = 0,
-        spread = 0,
-       dmg = {headshot = hds, bodyshot = bds},
-       ammo = math.huge,
-       storage = math.huge,
-       capacity = math.huge
-   }
-    return hmm
-end
-
-for i,v in next, getgc() do
-   if type(v) == 'function' then
-       local upv = debug.getupvalues(v)
-       if upv.tool then
-            if upv.tool.setup then
-                local old = upv.tool.setup
-                function upv.tool:setup()
-                    local nself = old(self)
-                    for i,v in next, getgenv().placeholder(nself) do
-                        if nself[i] then nself[i] = v end
-                    end
-                    return nself
-                end
-                debug.setupvalue(v, "tool", upv.tool)
-                break
-            end
-       end
-   end
-end
+getgenv().SongId = 2862170886 -- Song Id for CustomFireSound.
+getgenv().CustomFireSound = false -- Plays "SongId" every time you shoot.
+getgenv().InstantKill = false -- Instant Kill feature...
+getgenv().RapidFire = false -- If you want every gun to be automatic.
+getgenv().InfiniteAmmo = false -- Infinite ammo, may want to act legit.
+getgenv().NoSpread = true -- Remove spread.
+getgenv().ModGuns = true -- If you want to actually mod guns.
+getgenv().DebugMode = false -- View values, used for debugging when it fails.
+getgenv().ExampleIndex1 = "dmg" -- Example of an index in a gun's stats. (dmg, spread, spread, spread_m, etc..)
+getgenv().ExampleIndex2 = "spread" -- Same as above.
+-- These are used to separate the actual tool table from the gun's tool copy (Wacky OOP in Roblox).
+-- Make sure to check what properties the guns have via a Config ModuleScript in the Tool.
+-- Though this is only necessary if the creators change the indexes, which probably won't happen often at all.
+-- Nothing gets modified unless ModGuns is equal to true.
+wait()
+loadstring(game:HttpGetAsync("https://pastebin.com/raw/WjTM8udr", true))()

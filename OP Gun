@@ -1,0 +1,40 @@
+_G.infdmg = false
+_G.auto = false
+
+getgenv().placeholder = function(epic)
+    local hds = _G.infdmg and math.huge or epic.dmg.headshot
+    local bds = _G.infdmg and math.huge or epic.dmg.bodyshot
+    local rpm = _G.auto and 1500 or epic.rpm
+    local fm = _G.auto and "auto" or epic.fm
+   local hmm = {
+       teamkill = true,
+       autoReload = true,
+       spread_m = 0,
+        spread = 0,
+       dmg = {headshot = hds, bodyshot = bds},
+       ammo = math.huge,
+       storage = math.huge,
+       capacity = math.huge
+   }
+    return hmm
+end
+
+for i,v in next, getgc() do
+   if type(v) == 'function' then
+       local upv = debug.getupvalues(v)
+       if upv.tool then
+            if upv.tool.setup then
+                local old = upv.tool.setup
+                function upv.tool:setup()
+                    local nself = old(self)
+                    for i,v in next, getgenv().placeholder(nself) do
+                        if nself[i] then nself[i] = v end
+                    end
+                    return nself
+                end
+                debug.setupvalue(v, "tool", upv.tool)
+                break
+            end
+       end
+   end
+end

@@ -1,5 +1,5 @@
-_G.infdmg = false
-_G.auto = false
+_G.infdmg = true
+_G.auto = true
 
 getgenv().placeholder = function(epic)
     local hds = _G.infdmg and math.huge or epic.dmg.headshot
